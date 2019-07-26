@@ -18,8 +18,7 @@ Vue.use(MQ, {
 new Vue({
   router,
   store,
-  mounted(){
-    this.$store.dispatch('getWiffles')
+  mounted() {
   },
   render: function (h) { return h(App) }
 }).$mount('#app')

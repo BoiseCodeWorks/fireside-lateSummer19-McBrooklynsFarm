@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
-import { STATES } from 'mongoose';
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -14,18 +14,22 @@ let _api = Axios.create({
 export default new Vuex.Store({
   state: {
     farms: [],
+    activeFarm: {},
     livestock: []
   },
   mutations: {
     setFarms(state, data) {
       state.farms = data
     },
+    setActiveFarm(state, data) {
+      state.activeFarm = data
+    },
     setLivestock(state, data) {
       state.livestock = data
     }
   },
   actions: {
-    //#region WIFFLES
+    //#region FARMS
     getFarms({ commit }) {
       _api.get('farms')
         .then(res => {
@@ -33,17 +37,24 @@ export default new Vuex.Store({
           commit('setFarms', res.data)
         })
     },
+    getFarmById({ commit, dispatch }, payload) {
+      _api.get('farms/' + payload)
+        .then(res => {
+          commit('setActiveFarm', res.data)
+          router.push({ name: 'farmLand', params: { farmId: res.data._id } })
+
+        })
+    },
     createFarm({ commit, dispatch }, payload) {
       _api.post('farms', payload)
         .then(res => {
           console.log(res.data)
           console.log("success")
-          // dispatch('getFarms')
-        })
+          dispatch('getFarms')
+        }).catch(err => console.error(err))
     },
     deleteFarm({ commit }, id) {
       _api.delete('farms/' + id)
-        .then(() => commit('removeWiffle', id))
     },
     //#endregion
     addLivestock({ commit, dispatch }, payload) {

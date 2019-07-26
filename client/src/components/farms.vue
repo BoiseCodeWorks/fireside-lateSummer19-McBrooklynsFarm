@@ -1,27 +1,29 @@
 <template>
   <div class="farms">
     <div class="card">
-      <img src='' class="card-img-top" alt="...">
+      <img :src='farm.img' class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-          content.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">{{farm.name}}</h5>
+        <p>{{farm.location}}</p>
+        <a class="btn btn-primary" @click="setActiveFarm(farm._id)">Go To Farm</a>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+  import router from '../router'
   export default {
     name: "farms",
-    props: [],
+    props: ["farm"],
     data() {
       return {}
     },
     computed: {},
-    methods: {},
+    methods: {
+      setActiveFarm(id) {
+        this.$store.dispatch('getFarmById', id)
+      }
+    },
     components: {}
   }
 </script>

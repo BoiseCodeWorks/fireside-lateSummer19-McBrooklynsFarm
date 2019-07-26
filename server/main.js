@@ -4,6 +4,7 @@ import cors from 'cors'
 import "./db/dbconfig"
 
 import FarmController from './controllers/farmController'
+import AnimalController from './controllers/animalController'
 
 let port = 3000
 
@@ -25,6 +26,7 @@ var corsOptions = {
 server.use(cors(corsOptions))
 
 server.use('/api/farms', new FarmController().router)
+server.use('/api/animals', new AnimalController().router)
 
 server.use((error, req, res, next) => {
   res.status(error.status || 400).send({ error: { message: error.message } })
